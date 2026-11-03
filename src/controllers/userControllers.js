@@ -59,7 +59,7 @@ const createUser = async (req, res) => {
     try {
 
         const { name, email, password } = req.body;
-        console.log("password ", password)
+        //console.log("password ", password)
 
         const user = await User.createUser(
             name,

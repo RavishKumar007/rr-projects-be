@@ -6,6 +6,7 @@ const isProduction = process.env.NODE_ENV === "production";
 const login = async (req,res)=> {
     try{
         const {email, password} = req.body;
+        // console.log(email, password)
         const user = await User.getUserByEmailId(email);
         if(!user){
             throw new Error("invalid Credential");
@@ -29,7 +30,7 @@ const login = async (req,res)=> {
 
         res.send({data : user, isLoggedIn: true});
     } catch (err) {
-        console.log("error while login ",err);
+        //console.log("error while login ",err);
         res.status(500).json({
             status: 500,
             message: err.message
@@ -69,7 +70,7 @@ const signup = async(req,res)=>{
 
 
     } catch (err) {
-        console.log("error while login ",err);
+        //console.log("error while login ",err);
         let msg = "Failed to signup!"
         if(err.code == 23505){
             msg = "Already user exist";

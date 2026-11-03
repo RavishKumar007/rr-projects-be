@@ -45,7 +45,7 @@ const User = {
         return rows[0];
     },
     async getJWT (id) {
-        console.log("user ",id, process.env.JWT_TOKEN)
+        //console.log("user ",id, process.env.JWT_TOKEN)
         const token = await jwt.sign({id: id}, process.env.JWT_TOKEN,{
                     expiresIn : '7d'
                 });

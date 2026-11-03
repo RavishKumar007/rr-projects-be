@@ -11,7 +11,7 @@ const getCategories = async (req,res)=> {
         })
 
     } catch(err) {
-        console.log(err);
+        //console.log(err);
                 res.status(500).json({
             status: 500,
             message: "Failed to fetch categories"

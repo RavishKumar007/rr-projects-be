@@ -12,7 +12,7 @@ const {
 const router = express.Router();
 
 
-router.get("/", getArticles);
+router.post("/", getArticles);
 router.get("/:slug",getArticle);
 router.post('/',createArticle);
 router.put("/:id", updateArticle);

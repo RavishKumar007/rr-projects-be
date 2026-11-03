@@ -1,7 +1,7 @@
 const pool = require("../config/database");
 
 const Articles = {
-    async getAllArticales(){
+    async getAllPublishedArticales(){
         const { rows } = await pool.query(
             `SELECT 
                 a.id,
@@ -25,6 +25,44 @@ const Articles = {
 
         return rows;
     },
+     async getAllArticales(limit){
+        const [article, count] = await Promise.all([
+            pool.query(
+            `SELECT 
+                a.id,
+                a.status,
+                a.slug,
+                a.title,
+                a.excerpt,
+                a.content,
+                a.cover_image,
+                a.read_time,
+                a.published_at,
+                c.name AS category_name,
+                c.slug AS category_slug
+            FROM articles AS a
+            LEFT JOIN categories AS c
+                ON a.category_id = c.id
+            ORDER BY 
+                a.created_at DESC
+            LIMIT $1`,
+            [limit]
+
+            ),
+            pool.query(
+                `SELECT
+        COUNT(*) FILTER (WHERE status = 'published') AS published,
+        COUNT(*) FILTER (WHERE status = 'draft') AS drafted,
+        COUNT(*) AS total
+    FROM articles`
+            )
+        ]);
+
+        return {
+            articles: article.rows,
+            counts: count.rows[0]
+        };
+    },
 
     
     async getArticleBySlug(slug) {
@@ -47,6 +85,33 @@ const Articles = {
             AND a.status = 'published'
             LIMIT 1`,
             [slug]
+        );
+
+        return rows[0] || null;
+    },
+
+      
+    async getArticleById(id) {
+        const { rows } = await pool.query(
+            `SELECT
+                a.id,
+                a.title,
+                a.slug,
+                a.excerpt,
+                a.content,
+                a.cover_image,
+                a.published_at,
+                a.created_at,
+                c.name AS category_name,
+                c.slug AS category_slug,
+                c.id AS category_id
+            FROM articles AS a
+            LEFT JOIN categories AS c
+                ON a.category_id = c.id
+            WHERE a.id = $1
+            AND a.status = 'published'
+            LIMIT 1`,
+            [id]
         );
 
         return rows[0] || null;
