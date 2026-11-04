@@ -2,6 +2,7 @@ const Articles = require('../models/articlesModel');
 const pool = require('../config/database');
 const validateArticle = require('../validators/articleValidator')
 const { uploadToS3, deleteFromS3 } = require('../utils/uploadToS3')
+const getImageUrl = require('../utils/getImageUrl');
 
 const getArticles = async (req, res) => {
     try {
@@ -11,9 +12,15 @@ const getArticles = async (req, res) => {
         const { articles, counts } = await Articles.getAllArticales(limit);
         //    const published = articles.articles.filter((val,i)=>val.status == 'published');
         //    const drafted = articles.articles.filter((val)=> val.status == 'draft');
+        
+        const formattedArticles = articles.map(article => ({
+            ...article,
+            cover_image: getImageUrl(article.cover_image)
+        }));
+        
         res.status(200).json({
             status: 200,
-            articles: articles,
+            articles: formattedArticles,
             counts: counts
         })
     } catch (error) {
@@ -41,7 +48,10 @@ const getArticleById = async (req, res) => {
 
         res.status(200).json({
             status: 200,
-            data: article
+            data: {
+                ...article,
+                cover_image: getImageUrl(article.cover_image)
+            }
         });
 
     } catch (error) {
@@ -66,7 +76,10 @@ const getArticle = async (req, res) => {
 
         res.status(200).json({
             status: 200,
-            data: article
+            data:  {
+                ...article,
+                cover_image: getImageUrl(article.cover_image)
+            }
         });
 
     } catch (error) {
@@ -108,7 +121,10 @@ const createArticle = async (req, res) => {
 
         res.status(201).json({
             status: 201,
-            data: article
+            data: {
+                ...article,
+                cover_image: getImageUrl(article.cover_image)
+            }
         });
 
     } catch (error) {
@@ -190,7 +206,10 @@ const updateArticle = async (req, res) => {
 
         res.status(200).json({
             status: 200,
-            data: article
+            data: {
+                ...article,
+                cover_image: getImageUrl(article.cover_image)
+            }
         });
     } catch (error) {
         // Clean up newly uploaded image if the DB update fails
