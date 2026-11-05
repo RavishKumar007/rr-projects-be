@@ -25,7 +25,11 @@ const Articles = {
 
         return rows;
     },
-     async getAllArticales(limit){
+     async getAllArticales(limit,offset,search){
+        let query = '';
+        if(search){
+            query = ` WHERE a.title ILIKE $3`;
+        }
         const [article, count] = await Promise.all([
             pool.query(
             `SELECT 
@@ -43,10 +47,11 @@ const Articles = {
             FROM articles AS a
             LEFT JOIN categories AS c
                 ON a.category_id = c.id
+            ${query}
             ORDER BY 
                 a.created_at DESC
-            LIMIT $1`,
-            [limit]
+            LIMIT $1 OFFSET $2`,
+            search ? [limit, offset, `%${search}%`] : [limit, offset]
 
             ),
             pool.query(
@@ -109,7 +114,6 @@ const Articles = {
             LEFT JOIN categories AS c
                 ON a.category_id = c.id
             WHERE a.id = $1
-            AND a.status = 'published'
             LIMIT 1`,
             [id]
         );

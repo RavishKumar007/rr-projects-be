@@ -25,7 +25,10 @@ app.use(cors({
     ],
     credentials:true
 }))
-
+app.use((req, res, next) => {
+    console.log('Incoming request:', req.method, req.originalUrl);
+    next();
+});
 // Routes
 app.use("/users", userRoutes); // abondand
 app.use("/articles", articlesRoutes);

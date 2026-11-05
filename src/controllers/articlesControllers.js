@@ -8,8 +8,9 @@ const getArticles = async (req, res) => {
     try {
         //console.log("articles accessing")
         const body = req.body;
-        const { limit } = body;
-        const { articles, counts } = await Articles.getAllArticales(limit);
+        const { limit, offset, search } = body;
+        console.log("val ",limit, offset, search)
+        const { articles, counts } = await Articles.getAllArticales(limit,offset,search);
         //    const published = articles.articles.filter((val,i)=>val.status == 'published');
         //    const drafted = articles.articles.filter((val)=> val.status == 'draft');
         
@@ -38,6 +39,7 @@ const getArticles = async (req, res) => {
 const getArticleById = async (req, res) => {
     try {
         const { id } = req.body;
+        console.log("id : ",id)
         const article = await Articles.getArticleById(id);
         if (!article) {
             return res.status(404).json({
