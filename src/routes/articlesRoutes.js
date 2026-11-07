@@ -2,7 +2,7 @@ const express = require("express");
 
 const {
     getArticles,
-    getArticle,
+    getArticleBySlug,
     createArticle,
     updateArticle,
     deleteArticle
@@ -13,7 +13,7 @@ const router = express.Router();
 
 
 router.post("/", getArticles);
-router.get("/:slug",getArticle);
+router.get("/:slug",getArticleBySlug);
 router.post('/',createArticle);
 router.put("/:id", updateArticle);
 router.delete("/:id", deleteArticle);

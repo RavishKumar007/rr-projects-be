@@ -65,7 +65,7 @@ const getArticleById = async (req, res) => {
     }
 }
 
-const getArticle = async (req, res) => {
+const getArticleBySlug = async (req, res) => {
     try {
         const { slug } = req.params;
         const article = await Articles.getArticleBySlug(slug);
@@ -260,7 +260,7 @@ const deleteArticle = async (req, res) => {
 module.exports = {
     getArticles,
     getArticleById,
-    getArticle,
+    getArticleBySlug,
     createArticle,
     updateArticle,
     deleteArticle

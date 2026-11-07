@@ -101,6 +101,7 @@ const Articles = {
             `SELECT
                 a.id,
                 a.title,
+                a.status,
                 a.slug,
                 a.excerpt,
                 a.content,

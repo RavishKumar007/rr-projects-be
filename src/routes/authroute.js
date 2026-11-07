@@ -16,10 +16,7 @@ router.post("/logout", logout);
 // user related api call 
 router.get('/userdetails',userAuth,getUserDetail);
 router.post('/getarticles',userAuth,getArticles);
-router.post('/getarticlebyid', (req, res, next) => {
-    console.log('getarticlebyid route matched');
-    next();
-},userAuth,getArticleById);
+router.post('/getarticlebyid',userAuth,getArticleById);
 router.post('/getcategories',userAuth,getCategories);
 
 router.post('/createarticle',userAuth,upload.single('cover_image'),createArticle);
