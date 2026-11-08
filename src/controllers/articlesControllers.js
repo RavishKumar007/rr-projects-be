@@ -4,6 +4,36 @@ const validateArticle = require('../validators/articleValidator')
 const { uploadToS3, deleteFromS3 } = require('../utils/uploadToS3')
 const getImageUrl = require('../utils/getImageUrl');
 
+const getAllPublishedArticales =  async (req, res) => {
+    try {
+        //console.log("articles accessing")
+        const body = req.body;
+        const { limit } = body;
+        const articles  = await Articles.getAllPublishedArticales(limit);
+        //    const published = articles.articles.filter((val,i)=>val.status == 'published');
+        //    const drafted = articles.articles.filter((val)=> val.status == 'draft');
+        
+        const formattedArticles = articles.map(article => ({
+            ...article,
+            cover_image: getImageUrl(article.cover_image)
+        }));
+        
+        res.status(200).json({
+            status: 200,
+            articles: formattedArticles
+        })
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            status: 500,
+            message: "Failed to fetch articles"
+        });
+
+    }
+}
+
 const getArticles = async (req, res) => {
     try {
         //console.log("articles accessing")
@@ -263,5 +293,6 @@ module.exports = {
     getArticleBySlug,
     createArticle,
     updateArticle,
-    deleteArticle
+    deleteArticle,
+    getAllPublishedArticales
 }

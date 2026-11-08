@@ -1,7 +1,7 @@
 const pool = require("../config/database");
 
 const Articles = {
-    async getAllPublishedArticales(){
+    async getAllPublishedArticales(limit){
         const { rows } = await pool.query(
             `SELECT 
                 a.id,
@@ -20,7 +20,9 @@ const Articles = {
             WHERE a.status = 'published'
             ORDER BY 
                 a.published_at DESC NULLS LAST,
-                a.created_at DESC`
+                a.created_at DESC
+            LIMIT $1`,
+            [limit]
             );
 
         return rows;
