@@ -21,7 +21,8 @@ app.use(cookieParser())
 // cors error 
 app.use(cors({
     origin:[
-        'http://localhost:4200'
+        'http://localhost:4200',
+        https://rr-projects.netlify.app/
     ],
     credentials:true
 }))
